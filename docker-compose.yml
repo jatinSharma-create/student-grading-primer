@@ -10,11 +10,30 @@ services:
     ports:
       - "5432:5432"
 
+    volumes:
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - db_data:/var/lib/postgresql/data
+
   backend:
     # TODO: you will need to add to this
+    build: ./backend
+    ports:
+      - "5000:5000"
+    environment:
+      DB_HOST: "db"
+      DB_USER: "marksuser"
+      DB_PASSWORD: "markspass"
+      DB_NAME: "marksdb"
+    depends_on:
+      - db
 
   frontend:
     # TODO: you will need to add to this
+    build: ./frontend
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
 
   automark:
     build: ./automark
@@ -23,3 +42,6 @@ services:
       - db
     profiles:
       - debug
+
+volumes:
+  db_data:
