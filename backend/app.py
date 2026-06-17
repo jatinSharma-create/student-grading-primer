@@ -42,7 +42,7 @@ def create_student():
         course = student_data.get("course")
         mark = student_data.get("mark")
 
-        # Validation: name and course are strictly required
+        
         if not name or not course:
             return jsonify({"error": "Missing required fields: name and course"}), 404
 
@@ -74,7 +74,7 @@ def update_student(student_id):
         course = student_data.get("course")
         mark = student_data.get("mark")
 
-        # Validation: If mark is provided, ensure it's an integer
+       
         if mark is not None:
             try:
                 mark = int(mark)
@@ -114,11 +114,11 @@ def get_stats():
     try:
         students = db.get_all_students()
         
-        # Extract marks, ignoring any student records where mark is explicitly None
+       
         marks = [s["mark"] for s in students if s["mark"] is not None]
         count = len(marks)
 
-        # EDGE CASE SOLUTION: Handle an empty database setup gracefully
+        # what if the database contains zero students or all students have a mark of null
         if count == 0:
             return jsonify({
                 "count": 0,
